@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Article;
+use App\Services\BlogService;
 
 class BlogController extends Controller
 {
     public function index(Request $request)
     {
-        $articles = Article::orderBy('id','asc')->paginate(2);
+        //$articles = Article::orderBy('id','asc')->paginate(2);
+
+        $articles = BlogService::getArticles();
+        return view('blog.index', ['articles' => $articles]);
+
+
 
 
     	//$id = $request->input('id');
@@ -79,6 +85,15 @@ class BlogController extends Controller
 
     public function view(Request $request, $id)
     {
+        /*$blogService = new BlogService;
+        $blogService = $blogService->getArticle($id);
+         return view('blog.view', [
+            'id' => $id,
+            ]);
+         $article = BlogService::getArticle();*/
+
+
+
         $articles = Article::where('id', '=', $id)->get();
         return view('blog.view', [
             'id' => $id,
